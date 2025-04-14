@@ -18,7 +18,7 @@ fi
 sleep 1
 apt-get update -y
 apt remove ufw -y
-apt-get install -y gnupg curl firewalld git make
+apt-get install -y gnupg curl firewalld git make incus
 git clone https://github.com/yoonjin67/linux_virt_unit -b gh-deploy
 firewall-cmd --reload
 firewall-cmd --zone=public --add-port=443/tcp
