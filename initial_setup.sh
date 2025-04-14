@@ -20,25 +20,15 @@ make
 apt-get update -y
 apt remove ufw -y
 apt-get install -y gnupg curl firewalld git
-git submodule init
-git submodule update --recursive
+git clone https://github.com/yoonjin67/linux_virt_unit -b gh-deploy
 firewall-cmd --reload
-firewall-cmd --zone=public --add-port=32000/tcp
+firewall-cmd --zone=public --add-port=443/tcp
 curl -fsSL https://www.mongodb.org/static/pgp/server-6.0.asc | \
    gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
    --dearmor
 echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 apt-get update -y
 apt-get  -y install mongodb-org nginx nginx-extras
-if [ ! -f "/var/lib/snapd/snap/bin" ]
-then
-    echo "PATH=$PATH":/snap/bin"" >> /etc/environment
-    source /root/.bashrc
-    systemctl enable snapd
-    systemctl start snapd
-fi
-#ausearch -c 'snap-confine- - | audit2allow -M my-snapconfine'
-#semodule -X 300 -i my-snapconfine.pp
 #cat > mongodb_cgroup_memory.te <<EOF
 #module mongodb_cgroup_memory 1.0;
 #require {
@@ -93,7 +83,7 @@ firewall-cmd --permanent --zone=public --add-port 25565/tcp
 firewall-cmd --permanent --zone=public --add-port 25565/udp
 firewall-cmd --permanent --zone=public --add-port 25566/tcp
 firewall-cmd --permanent --zone=public --add-port 25566/udp
-firewall-cmd --permanent --zone=public --add-port 32000/tcp
+firewall-cmd --permanent --zone=public --add-port 443/tcp
 #for i in {30000..30001..60000}
 #do 
 #		semanage port -a -t http_port_t -p tcp $i
