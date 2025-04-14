@@ -16,10 +16,9 @@ else
 		sudo -s
 fi
 sleep 1
-make
 apt-get update -y
 apt remove ufw -y
-apt-get install -y gnupg curl firewalld git
+apt-get install -y gnupg curl firewalld git make
 git clone https://github.com/yoonjin67/linux_virt_unit -b gh-deploy
 firewall-cmd --reload
 firewall-cmd --zone=public --add-port=443/tcp
@@ -104,6 +103,7 @@ sudo iptables -A OUTPUT -p tcp --dport 27020:60000 -j ACCEPT
 sudo iptables -A OUTPUT -p tcp --dport 27020:60000 -j ACCEPT
 sudo iptables -A OUTPUT -p udp --dport 27020:60000 -j ACCEPT
 netfilter-persistent save
+make
 
 #ausearch -c 'nginx' --raw | audit2allow -M my-nginx
 #semodule -X 300 -i my-nginx.pp
